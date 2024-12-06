@@ -106,10 +106,10 @@ JNIEXPORT void JNICALL Java_com_arkueid_live2d_Live2D_00024LAppModel_touch
 /*
  * Class:     com_arkueid_live2d_Live2D_LAppModel
  * Method:    drag
- * Signature: (II)V
+ * Signature: (FF)V
  */
 JNIEXPORT void JNICALL Java_com_arkueid_live2d_Live2D_00024LAppModel_drag
-  (JNIEnv *, jobject, jint, jint);
+  (JNIEnv *, jobject, jfloat, jfloat);
 
 /*
  * Class:     com_arkueid_live2d_Live2D_LAppModel

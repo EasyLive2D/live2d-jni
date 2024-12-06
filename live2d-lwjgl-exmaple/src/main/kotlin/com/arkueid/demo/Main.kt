@@ -28,6 +28,10 @@ fun main() {
 
     glfwSwapInterval(1)
 
+    model.drag(200, 200)
+
+    model.touch(200f, 200f, null, null)
+
     while (!glfwWindowShouldClose(window))
     {
         Live2D.clearBuffer()

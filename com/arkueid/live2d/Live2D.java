@@ -132,7 +132,7 @@ public class Live2D {
         public native void touch(float x, float y, OnStartMotionListener onStartMotionListener,
                 OnFinishMotionListener onFinishMotionListener);
 
-        public native void drag(int x, int y);
+        public native void drag(float x, float y);
 
         public native boolean isMotionFinished();
 

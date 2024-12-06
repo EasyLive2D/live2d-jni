@@ -123,7 +123,7 @@ JNIEXPORT void JNICALL Java_com_arkueid_live2d_Live2D_00024LAppModel_startMotion
     {
         if (onFinishMethodID == nullptr)
             return;
-        env->CallVoidMethod(onStartListener, onFinishMethodID);
+        env->CallVoidMethod(onFinishListener, onFinishMethodID);
     };
 
     jboolean isCopy;
@@ -167,7 +167,7 @@ JNIEXPORT void JNICALL Java_com_arkueid_live2d_Live2D_00024LAppModel_startRandom
     {
         if (onFinishMethodID == nullptr)
             return;
-        env->CallVoidMethod(onStartListener, onFinishMethodID);
+        env->CallVoidMethod(onFinishListener, onFinishMethodID);
     };
 
     jboolean isCopy;
@@ -228,7 +228,7 @@ JNIEXPORT jboolean JNICALL Java_com_arkueid_live2d_Live2D_00024LAppModel_hasMocC
  * Method:    touch
  * Signature: (IILLive2D/LAppModel/OnStartMotionListener;LLive2D/LAppModel/OnFinishMotionListener;)V
  */
-JNIEXPORT void JNICALL Java_com_arkueid_live2d_Live2D_00024LAppModel_touch(JNIEnv *env, jobject obj, jint x, jint y, jobject onStartListener, jobject onFinishListener)
+JNIEXPORT void JNICALL Java_com_arkueid_live2d_Live2D_00024LAppModel_touch(JNIEnv *env, jobject obj, jfloat x, jfloat y, jobject onStartListener, jobject onFinishListener)
 {
     LAppModelObject *self = (LAppModelObject *)getCppHandle(env, obj);
 
@@ -270,7 +270,7 @@ JNIEXPORT void JNICALL Java_com_arkueid_live2d_Live2D_00024LAppModel_touch(JNIEn
         {
             if (onFinishMethodID == nullptr)
                 return;
-            env->CallVoidMethod(onStartListener, onFinishMethodID);
+            env->CallVoidMethod(onFinishListener, onFinishMethodID);
         };
         self->model->StartRandomMotion(hitArea, MOTION_PRIORITY_FORCE, onStart, onFinish);
     }
@@ -281,7 +281,7 @@ JNIEXPORT void JNICALL Java_com_arkueid_live2d_Live2D_00024LAppModel_touch(JNIEn
  * Method:    drag
  * Signature: (II)V
  */
-JNIEXPORT void JNICALL Java_com_arkueid_live2d_Live2D_00024LAppModel_drag(JNIEnv *env, jobject obj, jint mx, jint my)
+JNIEXPORT void JNICALL Java_com_arkueid_live2d_Live2D_00024LAppModel_drag(JNIEnv *env, jobject obj, jfloat mx, jfloat my)
 {
     LAppModelObject *self = (LAppModelObject *)getCppHandle(env, obj);
 
