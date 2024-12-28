@@ -30,8 +30,8 @@ endif()
 add_subdirectory(Main)
 
 # 创建 Java 扩展模块
-add_library(LAppModelWrapper SHARED LAppModel.cpp Live2D.cpp)
-target_link_libraries(LAppModelWrapper PRIVATE live2d)
+add_library(LAppModelWrapper SHARED lapp_model.cpp live2d.cpp)
+target_link_libraries(LAppModelWrapper PRIVATE Main)
 target_include_directories(LAppModelWrapper PRIVATE 
   D:/jdk/jdk-17.0.9/include 
   D:/jdk/jdk-17.0.9/include/win32
@@ -51,6 +51,10 @@ add_custom_command(
   TARGET ${LIB_NAME}
   POST_BUILD
   COMMAND
-    ${CMAKE_COMMAND} -E
-      copy $<TARGET_FILE_DIR:${LIB_NAME}>/${MODULE_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/${OUTPUT_NAME}
+  ${CMAKE_COMMAND} -E
+    copy $<TARGET_FILE_DIR:${LIB_NAME}>/${MODULE_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/live2d-lwjgl-example/live2d/src/main/resources/${OUTPUT_NAME}
+
+  COMMAND
+  ${CMAKE_COMMAND} -E
+    copy ${CMAKE_CURRENT_SOURCE_DIR}/com/arkueid/live2d/Live2D_v3.java ${CMAKE_CURRENT_SOURCE_DIR}/live2d-lwjgl-example/live2d/src/main/java/com/arkueid/live2d/Live2D_v3.java
 )

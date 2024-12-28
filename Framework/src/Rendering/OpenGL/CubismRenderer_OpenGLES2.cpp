@@ -467,6 +467,7 @@ void CubismRenderer_OpenGLES2::Initialize(CubismModel* model)
 
 void CubismRenderer_OpenGLES2::Initialize(CubismModel* model, csmInt32 maskBufferCount)
 {
+
     // 1未満は1に補正する
     if (maskBufferCount < 1)
     {
@@ -477,10 +478,12 @@ void CubismRenderer_OpenGLES2::Initialize(CubismModel* model, csmInt32 maskBuffe
     if (model->IsUsingMasking())
     {
         _clippingManager = CSM_NEW CubismClippingManager_OpenGLES2();  //クリッピングマスク・バッファ前処理方式を初期化
+
         _clippingManager->Initialize(
             *model,
             maskBufferCount
         );
+
 
         _offscreenSurfaces.Clear();
         for (csmInt32 i = 0; i < maskBufferCount; ++i)
@@ -489,12 +492,12 @@ void CubismRenderer_OpenGLES2::Initialize(CubismModel* model, csmInt32 maskBuffe
             offscreenSurface.CreateOffscreenSurface(_clippingManager->GetClippingMaskBufferSize().X, _clippingManager->GetClippingMaskBufferSize().Y);
             _offscreenSurfaces.PushBack(offscreenSurface);
         }
-
     }
 
     _sortedDrawableIndexList.Resize(model->GetDrawableCount(), 0);
 
     CubismRenderer::Initialize(model, maskBufferCount);  //親クラスの処理を呼ぶ
+
 }
 
 void CubismRenderer_OpenGLES2::PreDraw()
@@ -519,7 +522,7 @@ void CubismRenderer_OpenGLES2::PreDraw()
     glBindBuffer(GL_ARRAY_BUFFER, 0); //前にバッファがバインドされていたら破棄する必要がある
 
     //異方性フィルタリング。プラットフォームのOpenGLによっては未対応の場合があるので、未設定のときは設定しない
-    if (GetAnisotropy() > 0.0f)
+    if (GetAnisotropy() >= 1.0f)
     {
         for (csmInt32 i = 0; i < _textures.GetSize(); i++)
         {

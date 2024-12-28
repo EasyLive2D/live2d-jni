@@ -95,8 +95,11 @@ csmBool CubismOffscreenSurface_OpenGLES2::CreateOffscreenSurface(csmUint32 displ
         glGetIntegerv(GL_FRAMEBUFFER_BINDING, &tmpFramebufferObject);
 
         glGenFramebuffers(1, &ret);
+
         glBindFramebuffer(GL_FRAMEBUFFER, ret);
+
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _colorBuffer, 0);
+
         glBindFramebuffer(GL_FRAMEBUFFER, tmpFramebufferObject);
 
         _renderTexture = ret;

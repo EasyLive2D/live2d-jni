@@ -1,93 +1,41 @@
-#include "common.hpp"
-#include "com_arkueid_live2d_Live2D.h"
+#include <GL/glew.h>
+#include "com_arkueid_live2d_Live2D_v3.h"
+#include <jni.h>
 
-static LAppAllocator _cubismAllocator;
-static Csm::CubismFramework::Option _cubismOption;
 
-std::mutex mapMutex;
-std::unordered_map<size_t, LAppModel *> gModelMap;
+#include <string>
+#include <CubismFramework.hpp>
+#include <LAppAllocator.hpp>
+#include <LAppPal.hpp>
+#include <Log.hpp>
 
-/*
- * Class:     Live2D
- * Method:    init
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_com_arkueid_live2d_Live2D_init(JNIEnv *, jclass)
-{
-    _cubismOption.LogFunction = LAppPal::PrintLn;
-    _cubismOption.LoggingLevel = Csm::CubismFramework::Option::LogLevel_Verbose;
+static LAppAllocator cubismAllocator;
+static Csm::CubismFramework::Option cubismOption;
 
-    Csm::CubismFramework::StartUp(&_cubismAllocator, &_cubismOption);
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_arkueid_live2d_Live2D_1v3_init(JNIEnv *env, jclass clazz) {
+    cubismOption.LogFunction = LAppPal::PrintLn;
+    cubismOption.LoggingLevel = Csm::CubismFramework::Option::LogLevel_Verbose;
+
+    Csm::CubismFramework::CleanUp();
+    Csm::CubismFramework::StartUp(&cubismAllocator, &cubismOption);
     Csm::CubismFramework::Initialize();
+
+    LAppPal::UpdateTime();
+
+    glewInit();
 }
-
-/*
- * Class:     Live2D
- * Method:    dispose
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_com_arkueid_live2d_Live2D_dispose(JNIEnv *, jclass)
-{
-    for (auto &pair : gModelMap)
-    {
-        delete pair.second;
-        Info("[G] release: LAppModel(at=%p)", pair.second);
-    }
-
-    gModelMap.clear();
-
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_arkueid_live2d_Live2D_1v3_dispose(JNIEnv *env, jclass clazz) {
     Csm::CubismFramework::Dispose();
 }
-
-/*
- * Class:     Live2D
- * Method:    glewInit
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_com_arkueid_live2d_Live2D_glewInit(JNIEnv *, jclass)
-{
-    if (glewInit() != GLEW_OK)
-    {
-        Info("Can't initilize glew.");
-    }
-}
-
-/*
- * Class:     Live2D
- * Method:    setGLProperties
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_com_arkueid_live2d_Live2D_setGLProperties(JNIEnv *, jclass)
-{
-    // テクスチャサンプリング設定
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-    // 透過設定
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
-/*
- * Class:     Live2D
- * Method:    clearBuffer
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_com_arkueid_live2d_Live2D_clearBuffer(JNIEnv *, jclass)
-{
-    glClearColor(0.0, 0.0, 0.0, 0.0);
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_arkueid_live2d_Live2D_1v3_clearBuffer(JNIEnv *env, jclass clazz, jfloat r, jfloat g,
+                                               jfloat b, jfloat a) {
+    glClearColor(r, g, b, a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearDepth(1.0);
-}
-
-/*
- * Class:     Live2D
- * Method:    setLogEnable
- * Signature: (Z)V
- */
-
-extern bool live2dLogEnable;
-JNIEXPORT void JNICALL Java_com_arkueid_live2d_Live2D_setLogEnable(JNIEnv *, jclass, jboolean enable)
-{
-    live2dLogEnable = enable;
+    glClearDepthf(1.0f);
 }
